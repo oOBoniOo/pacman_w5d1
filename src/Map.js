@@ -47,43 +47,49 @@ class Map {
   keyboard_event() {}
   update() {}
 
+  drawBloq(ctx, fillColor = "lightgrey", x, y, bW, bH) {
+    ctx.fillStyle = fillColor;
+
+    ctx.fillRect(x, y, bW, bH);
+
+    ctx.strokeStyle = fillColor;
+
+    ctx.strokeRect(x, y, bW, bH);
+  }
+  drawBall(ctx, fillColor = "red", x, y, bW, bH) {
+    ctx.fillStyle = fillColor;
+
+    ctx.beginPath();
+
+    ctx.arc(x + bW / 2, y + bH / 2, 3, 0, Math.PI * 2, true);
+
+    ctx.fill();
+  }
+
   draw(delta, ctx) {
     let spacing = 10;
     let sizex = this.canvasWidth / columns;
     let sizey = this.canvasHeight / rows;
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < columns; j++) {
-        ctx.beginPath();
         ctx.lineWidth = 1;
         switch (mapa[i][j]) {
           case "W":
-            ctx.fillStyle = "black";
-            ctx.fillRect(j * sizex, i * sizey, sizex + 1, sizey + 1);
+            this.drawBloq(ctx, "blue", j * sizex, i * sizey, sizex, sizey);
+            break;
 
           case "o":
-            ctx.fillRect(j * sizex, i * sizey, sizex + 1, sizey + 1);
+            this.drawBloq(ctx, "white", j * sizex, i * sizey, sizex, sizey);
+            break;
 
           case ".":
-            ctx.arc(
-              j * sizex + sizex / 2,
-              i * sizey + sizey / 2,
-              3,
-              1,
-              2 * Math.PI
-            );
+            this.drawBall(ctx, "purple", j * sizex, i * sizey, sizex, sizey);
+            break;
 
           case "*":
-            ctx.arc(
-              j * sizex + sizex / 2,
-              i * sizey + sizey / 2,
-              5,
-              0,
-              2 * Math.PI
-            );
+            this.drawBall(ctx, "green", j * sizex, i * sizey, sizex, sizey);
+            break;
         }
-        ctx.closePath();
-        ctx.fill();
-        ctx.stroke();
       }
     }
     /* Fill the code */
